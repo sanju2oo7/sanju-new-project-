@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Payments - BUSARO Admin</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+
+            width: 250px;
+            height: 100vh;
+
+            background: #111827;
+            color: white;
+
+            padding: 25px 18px;
+        }
+
+        .logo {
+            text-align: center;
+
+            font-size: 28px;
+            font-weight: bold;
+
+            color: #4f9cff;
+
+            margin-bottom: 10px;
+        }
+
+        .admin-title {
+            text-align: center;
+
+            color: #9ca3af;
+
+            font-size: 13px;
+
+            margin-bottom: 30px;
+        }
+
+        .menu a {
+            display: block;
+
+            padding: 13px 15px;
+
+            margin-bottom: 7px;
+
+            color: #d1d5db;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: #1769e0;
+            color: white;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 250px;
+
+            padding: 30px;
+        }
+
+        .topbar {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 30px;
+        }
+
+        .topbar h1 {
+            font-size: 30px;
+
+            margin-bottom: 5px;
+        }
+
+        .topbar p {
+            color: #777;
+        }
+
+        .admin-user {
+            background: white;
+
+            padding: 11px 18px;
+
+            border-radius: 8px;
+
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        /* SUMMARY */
+
+        .summary {
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 12px;
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .summary-card span {
+            color: #777;
+
+            font-size: 13px;
+        }
+
+        .summary-card h2 {
+            margin-top: 8px;
+
+            color: #1769e0;
+
+            font-size: 25px;
+        }
+
+        /* TOOLBAR */
+
+        .toolbar {
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 12px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .search {
+            width: 320px;
+
+            padding: 11px 14px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 7px;
+
+            outline: none;
+        }
+
+        .filter {
+            padding: 11px 14px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 7px;
+
+            background: white;
+        }
+
+        /* TABLE */
+
+        .table-container {
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 20px;
+
+            overflow-x: auto;
+
+            box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 1250px;
+        }
+
+        th,
+        td {
+            padding: 15px 12px;
+
+            text-align: left;
+
+            border-bottom: 1px solid #eee;
+
+            font-size: 13px;
+        }
+
+        th {
+            color: #555;
+
+            background: #f8fafc;
+        }
+
+        td {
+            color: #444;
+        }
+
+        .payment-id {
+            color: #1769e0;
+
+            font-weight: bold;
+        }
+
+        .booking-id {
+            font-weight: bold;
+
+            color: #333;
+        }
+
+        .amount {
+            font-weight: bold;
+
+            color: #222;
+        }
+
+        .commission {
+            color: #16803c;
+
+            font-weight: bold;
+        }
+
+        /* STATUS */
+
+        .status {
+            display: inline-block;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+
+            font-weight: bold;
+        }
+
+        .paid {
+            background: #dff7e6;
+
+            color: #16803c;
+        }
+
+        .partial {
+            background: #fff3cd;
+
+            color: #856404;
+        }
+
+        .failed {
+            background: #ffe5e5;
+
+            color: #d63031;
+        }
+
+        /* VIEW */
+
+        .view-btn {
+            background: #e8f1ff;
+
+            color: #1769e0;
+
+            text-decoration: none;
+
+            padding: 7px 11px;
+
+            border-radius: 6px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 1000px) {
+
+            .summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+                position: relative;
+
+                width: 100%;
+
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+
+                padding: 20px;
+            }
+
+            .summary {
+                grid-template-columns: 1fr;
+            }
+
+            .toolbar {
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+            .search {
+                width: 100%;
+            }
+
+            .topbar {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            BUSARO
+        </div>
+
+        <div class="admin-title">
+            ADMIN PANEL
+        </div>
+
+
+        <div class="menu">
+
+            <a href="index.html">
+                Dashboard
+            </a>
+
+            <a href="vehicles.html">
+                🚍 Vehicles
+            </a>
+
+            <a href="tours.html">
+                🗺️ Tours
+            </a>
+
+            <a href="places.html">
+                📍 Tourist Places
+            </a>
+
+            <a href="bookings.html">
+                📅 Bookings
+            </a>
+
+            <a href="customers.html">
+                👥 Customers
+            </a>
+
+            <a href="owners-drivers.html">
+                👨‍✈️ Owners & Drivers
+            </a>
+
+            <a href="payments.html" class="active">
+                💰 Payments
+            </a>
+
+            <a href="#">
+                💵 Pricing
+            </a>
+
+            <a href="#">
+                ⚙️ Settings
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+
+        <!-- TOPBAR -->
+
+        <div class="topbar">
+
+            <div>
+
+                <h1>
+                    Payments
+                </h1>
+
+                <p>
+                    Manage booking payments and settlements
+                </p>
+
+            </div>
+
+
+            <div class="admin-user">
+                👤 Admin
+            </div>
+
+        </div>
+
+
+        <!-- SUMMARY -->
+
+        <section class="summary">
+
+
+            <div class="summary-card">
+
+                <span>
+                    Total Revenue
+                </span>
+
+                <h2>
+                    ₹8.6L
+                </h2>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <span>
+                    Advance Received
+                </span>
+
+                <h2>
+                    ₹3.2L
+                </h2>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <span>
+                    Balance Pending
+                </span>
+
+                <h2>
+                    ₹5.4L
+                </h2>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <span>
+                    BUSARO Commission
+                </span>
+
+                <h2>
+                    ₹86K
+                </h2>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- TOOLBAR -->
+
+        <div class="toolbar">
+
+
+            <input
+                type="text"
+                class="search"
+                placeholder="Search payment or booking ID..."
+            >
+
+
+            <select class="filter">
+
+                <option>
+                    All Payments
+                </option>
+
+                <option>
+                    Paid
+                </option>
+
+                <option>
+                    Partial
+                </option>
+
+                <option>
+                    Failed
+                </option>
+
+            </select>
+
+
+            <select class="filter">
+
+                <option>
+                    All Methods
+                </option>
+
+                <option>
+                    UPI
+                </option>
+
+                <option>
+                    Card
+                </option>
+
+                <option>
+                    Net Banking
+                </option>
+
+            </select>
+
+
+        </div>
+
+
+        <!-- PAYMENT TABLE -->
+
+        <div class="table-container">
+
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Payment ID
+                        </th>
+
+                        <th>
+                            Booking ID
+                        </th>
+
+                        <th>
+                            Customer
+                        </th>
+
+                        <th>
+                            Total
+                        </th>
+
+                        <th>
+                            Advance Paid
+                        </th>
+
+                        <th>
+                            Balance
+                        </th>
+
+                        <th>
+                            BUSARO Commission
+                        </th>
+
+                        <th>
+                            Owner Amount
+                        </th>
+
+                        <th>
+                            Method
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Date
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    <!-- PAYMENT 1 -->
+
+                    <tr>
+
+                        <td class="payment-id">
+                            PAY-50001
+                        </td>
+
+                        <td class="booking-id">
+                            BUS-10001
+                        </td>
+
+                        <td>
+                            Arun Kumar
+                        </td>
+
+                        <td class="amount">
+                            ₹40,000
+                        </td>
+
+                        <td>
+                            ₹10,000
+                        </td>
+
+                        <td>
+                            ₹30,000
+                        </td>
+
+                        <td class="commission">
+                            ₹4,000
+                        </td>
+
+                        <td>
+                            ₹36,000
+                        </td>
+
+                        <td>
+                            UPI
+                        </td>
+
+                        <td>
+
+                            <span class="status partial">
+                                Partial
+                            </span>
+
+                        </td>
+
+                        <td>
+                            05-10-2026
+                        </td>
+
+                        <td>
+
+                            <a href="#" class="view-btn">
+                                View
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- PAYMENT 2 -->
+
+                    <tr>
+
+                        <td class="payment-id">
+                            PAY-50002
+                        </td>
+
+                        <td class="booking-id">
+                            BUS-10002
+                        </td>
+
+                        <td>
+                            Priya S
+                        </td>
+
+                        <td class="amount">
+                            ₹18,000
+                        </td>
+
+                        <td>
+                            ₹18,000
+                        </td>
+
+                        <td>
+                            ₹0
+                        </td>
+
+                        <td class="commission">
+                            ₹1,800
+                        </td>
+
+                        <td>
+                            ₹16,200
+                        </td>
+
+                        <td>
+                            Card
+                        </td>
+
+                        <td>
+
+                            <span class="status paid">
+                                Paid
+                            </span>
+
+                        </td>
+
+                        <td>
+                            05-10-2026
+                        </td>
+
+                        <td>
+
+                            <a href="#" class="view-btn">
+                                View
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- PAYMENT 3 -->
+
+                    <tr>
+
+                        <td class="payment-id">
+                            PAY-50003
+                        </td>
+
+                        <td class="booking-id">
+                            BUS-10003
+                        </td>
+
+                        <td>
+                            Rahul M
+                        </td>
+
+                        <td class="amount">
+                            ₹55,000
+                        </td>
+
+                        <td>
+                            ₹15,000
+                        </td>
+
+                        <td>
+                            ₹40,000
+                        </td>
+
+                        <td class="commission">
+                            ₹5,500
+                        </td>
+
+                        <td>
+                            ₹49,500
+                        </td>
+
+                        <td>
+                            UPI
+                        </td>
+
+                        <td>
+
+                            <span class="status partial">
+                                Partial
+                            </span>
+
+                        </td>
+
+                        <td>
+                            05-10-2026
+                        </td>
+
+                        <td>
+
+                            <a href="#" class="view-btn">
+                                View
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- PAYMENT 4 -->
+
+                    <tr>
+
+                        <td class="payment-id">
+                            PAY-50004
+                        </td>
+
+                        <td class="booking-id">
+                            BUS-10004
+                        </td>
+
+                        <td>
+                            Karthik R
+                        </td>
+
+                        <td class="amount">
+                            ₹9,000
+                        </td>
+
+                        <td>
+                            ₹9,000
+                        </td>
+
+                        <td>
+                            ₹0
+                        </td>
+
+                        <td class="commission">
+                            ₹900
+                        </td>
+
+                        <td>
+                            ₹8,100
+                        </td>
+
+                        <td>
+                            UPI
+                        </td>
+
+                        <td>
+
+                            <span class="status paid">
+                                Paid
+                            </span>
+
+                        </td>
+
+                        <td>
+                            05-10-2026
+                        </td>
+
+                        <td>
+
+                            <a href="#" class="view-btn">
+                                View
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- PAYMENT 5 -->
+
+                    <tr>
+
+                        <td class="payment-id">
+                            PAY-50005
+                        </td>
+
+                        <td class="booking-id">
+                            BUS-10005
+                        </td>
+
+                        <td>
+                            College Group
+                        </td>
+
+                        <td class="amount">
+                            ₹62,000
+                        </td>
+
+                        <td>
+                            ₹20,000
+                        </td>
+
+                        <td>
+                            ₹42,000
+                        </td>
+
+                        <td class="commission">
+                            ₹6,200
+                        </td>
+
+                        <td>
+                            ₹55,800
+                        </td>
+
+                        <td>
+                            Net Banking
+                        </td>
+
+                        <td>
+
+                            <span class="status partial">
+                                Partial
+                            </span>
+
+                        </td>
+
+                        <td>
+                            05-10-2026
+                        </td>
+
+                        <td>
+
+                            <a href="#" class="view-btn">
+                                View
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+
+            </table>
+
+
+        </div>
+
+
+    </main>
+
+
+</body>
+
+</html>

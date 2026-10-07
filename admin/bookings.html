@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link >
+    <title>Bookings Management - BUSARO Admin</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+
+            width: 250px;
+            height: 100vh;
+
+            background: #111827;
+            color: white;
+
+            padding: 25px 18px;
+        }
+
+        .logo {
+            text-align: center;
+
+            font-size: 28px;
+            font-weight: bold;
+
+            color: #4f9cff;
+
+            margin-bottom: 10px;
+        }
+
+        .admin-title {
+            text-align: center;
+
+            color: #9ca3af;
+
+            font-size: 13px;
+
+            margin-bottom: 30px;
+        }
+
+        .menu a {
+            display: block;
+
+            padding: 13px 15px;
+
+            margin-bottom: 7px;
+
+            color: #d1d5db;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: #1769e0;
+            color: white;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        .topbar {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 30px;
+        }
+
+        .topbar h1 {
+            font-size: 30px;
+            margin-bottom: 5px;
+        }
+
+        .topbar p {
+            color: #777;
+        }
+
+        .admin-user {
+            background: white;
+
+            padding: 11px 18px;
+
+            border-radius: 8px;
+
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        /* SUMMARY */
+
+        .summary {
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 12px;
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .summary-card span {
+            color: #777;
+            font-size: 13px;
+        }
+
+        .summary-card h2 {
+            margin-top: 8px;
+
+            color: #1769e0;
+
+            font-size: 25px;
+        }
+
+        /* TOOLBAR */
+
+        .toolbar {
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 12px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .search {
+            width: 300px;
+
+            padding: 11px 14px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 7px;
+
+            outline: none;
+        }
+
+        .filter {
+            padding: 11px 14px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 7px;
+
+            background: white;
+        }
+
+        /* TABLE */
+
+        .table-container {
+            background: white;
+
+            border-radius: 14px;
+
+            padding: 20px;
+
+            overflow-x: auto;
+
+            box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 1000px;
+        }
+
+        th,
+        td {
+            padding: 15px 12px;
+
+            text-align: left;
+
+            border-bottom: 1px solid #eee;
+
+            font-size: 13px;
+        }
+
+        th {
+            color: #555;
+
+            background: #f8fafc;
+        }
+
+        td {
+            color: #444;
+        }
+
+        .booking-id {
+            color: #1769e0;
+
+            font-weight: bold;
+        }
+
+        /* STATUS */
+
+        .status {
+            display: inline-block;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+
+            font-weight: bold;
+        }
+
+        .confirmed {
+            background: #dff7e6;
+            color: #16803c;
+        }
+
+        .pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .cancelled {
+            background: #ffe5e5;
+            color: #d63031;
+        }
+
+        .paid {
+            background: #e8f1ff;
+            color: #1769e0;
+        }
+
+        .partial {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        /* VIEW BUTTON */
+
+        .view-btn {
+            background: #e8f1ff;
+
+            color: #1769e0;
+
+            text-decoration: none;
+
+            padding: 7px 11px;
+
+            border-radius: 6px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 1000px) {
+
+            .summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+                position: relative;
+
+                width: 100%;
+
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+
+                padding: 20px;
+            }
+
+            .summary {
+                grid-template-columns: 1fr;
+            }
+
+            .toolbar {
+                flex-direction: column;
+
+                align-items: stretch;
+            }
+
+            .search {
+                width: 100%;
+            }
+
+            .topbar {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            BUSARO
+        </div>
+
+        <div class="admin-title">
+            ADMIN PANEL
+        </div>
+
+
+        <div class="menu">
+
+            <a href="index.html">
+                Dashboard
+            </a>
+
+            <a href="vehicles.html">
+                🚍 Vehicles
+            </a>
+
+            <a href="tours.html">
+                🗺️ Tours
+            </a>
+
+            <a href="places.html">
+                📍 Tourist Places
+            </a>
+
+            <a href="bookings.html" class="active">
+                📅 Bookings
+            </a>
+
+            <a href="#">
+                👥 Customers
+            </a>
+
+            <a href="#">
+                👨‍✈️ Owners & Drivers
+            </a>
+
+            <a href="#">
+                💰 Payments
+            </a>
+
+            <a href="#">
+                💵 Pricing
+            </a>
+
+            <a href="#">
+                ⚙️ Settings
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+
+        <!-- TOPBAR -->
+
+        <div class="topbar">
+
+            <div>
+
+                <h1>
+                    Bookings
+                </h1>
+
+                <p>
+                    Manage customer bookings
+                </p>
+
+            </div>
+
+
+            <div class="admin-user">
+                👤 Admin
+            </div>
+
+        </div>
+
+
+        <!-- SUMMARY -->
+
+        <section class="summary">
+
+            <div class="summary-card">
+
+                <span>
+                    Total Bookings
+                </span>
+
+                <h2>
+                    128
+                </h2>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <span>
+                    Pending
+                </span>
+
+                <h2>
+                    12
+                </h2>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <span>
+                    Confirmed
+                </span>
+
+                <h2>
+                    108
+                </h2>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <span>
+                    Cancelled
+                </span>
+
+                <h2>
+                    8
+                </h2>
+
+            </div>
+
+        </section>
+
+
+        <!-- TOOLBAR -->
+
+        <div class="toolbar">
+
+            <input
+                type="text"
+                class="search"
+                placeholder="Search booking or customer..."
+            >
+
+
+            <select class="filter">
+
+                <option>
+                    All Bookings
+                </option>
+
+                <option>
+                    Pending
+                </option>
+
+                <option>
+                    Confirmed
+                </option>
+
+                <option>
+                    Cancelled
+                </option>
+
+            </select>
+
+
+            <select class="filter">
+
+                <option>
+                    All Payments
+                </option>
+
+                <option>
+                    Paid
+                </option>
+
+                <option>
+                    Partial
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- BOOKINGS TABLE -->
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Booking ID
+                        </th>
+
+                        <th>
+                            Customer
+                        </th>
+
+                        <th>
+                            Destination
+                        </th>
+
+                        <th>
+                            Travel Date
+                        </th>
+
+                        <th>
+                            Vehicle
+                        </th>
+
+                        <th>
+                            Passengers
+                        </th>
+
+                        <th>
+                            Total
+                        </th>
+
+                        <th>
+                            Advance
+                        </th>
+
+                        <th>
+                            Balance
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Payment
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    <!-- BOOKING 1 -->
+
+                    <tr>
+
+                        <td class="booking-id">
+                            BUS-10001
+                        </td>
+
+                        <td>
+                            Arun Kumar
+                        </td>
+
+                        <td>
+                            Ooty
+                        </td>
+
+                        <td>
+                            15-11-2026
+                        </td>
+
+                        <td>
+                            Tourist Bus
+                        </td>
+
+                        <td>
+                            40
+                        </td>
+
+                        <td>
+                            ₹40,000
+                        </td>
+
+                        <td>
+                            ₹10,000
+                        </td>
+
+                        <td>
+                            ₹30,000
+                        </td>
+
+                        <td>
+
+                            <span class="status pending">
+                                Pending
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status partial">
+                                Partial
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <a href="#" class="view-btn">
+                                View
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- BOOKING 2 -->
+
+                    <tr>
+
+                        <td class="booking-id">
+                            BUS-10002
+                        </td>
+
+                        <td>
+                            Priya S
+                        </td>
+
+                        <td>
+                            Kanyakumari
+                        </td>
+
+                        <td>
+                            20-11-2026
+                        </td>
+
+                        <td>
+                            Coach Van
+                        </td>
+
+                        <td>
+                            12
+                        </td>
+
+                        <td>
+                            ₹18,000
+                        </td>
+
+                        <td>
+                            ₹18,000
+                        </td>
+
+                        <td>
+                            ₹0
+                        </td>
+
+                        <td>
+
+                            <span class="status confirmed">
+                                Confirmed
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status paid">
+                                Paid
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <a href="#" class="view-btn">
+                                View
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- BOOKING 3 -->
+
+                    <tr>
+
+                        <td class="booking-id">
+                            BUS-10003
+                        </td>
+
+                        <td>
+                            Rahul M
+                        </td>
+
+                        <td>
+                            Munnar
+                        </td>
+
+                        <td>
+                            25-11-2026
+                        </td>
+
+                        <td>
+                            Tourist Bus
+                        </td>
+
+                        <td>
+                            50
+                        </td>
+
+                        <td>
+                            ₹55,000
+                        </td>
+
+                        <td>
+                            ₹15,000
+                        </td>
+
+                        <td>
+                            ₹40,000
+                        </td>
+
+                        <td>
+
+                            <span class="status confirmed">
+                                Confirmed
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status partial">
+                                Partial
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <a href="#" class="view-btn">
+                                View
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- BOOKING 4 -->
+
+                    <tr>
+
+                        <td class="booking-id">
+                            BUS-10004
+                        </td>
+
+                        <td>
+                            Karthik R
+                        </td>
+
+                        <td>
+                            Valparai
+                        </td>
+
+                        <td>
+                            28-11-2026
+                        </td>
+
+                        <td>
+                            Car
+                        </td>
+
+                        <td>
+                            4
+                        </td>
+
+                        <td>
+                            ₹9,000
+                        </td>
+
+                        <td>
+                            ₹9,000
+                        </td>
+
+                        <td>
+                            ₹0
+                        </td>
+
+                        <td>
+
+                            <span class="status confirmed">
+                                Confirmed
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status paid">
+                                Paid
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <a href="#" class="view-btn">
+                                View
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- BOOKING 5 -->
+
+                    <tr>
+
+                        <td class="booking-id">
+                            BUS-10005
+                        </td>
+
+                        <td>
+                            College Group
+                        </td>
+
+                        <td>
+                            Coimbatore → Mysuru
+                        </td>
+
+                        <td>
+                            02-12-2026
+                        </td>
+
+                        <td>
+                            Tourist Bus
+                        </td>
+
+                        <td>
+                            55
+                        </td>
+
+                        <td>
+                            ₹62,000
+                        </td>
+
+                        <td>
+                            ₹20,000
+                        </td>
+
+                        <td>
+                            ₹42,000
+                        </td>
+
+                        <td>
+
+                            <span class="status cancelled">
+                                Cancelled
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status partial">
+                                Partial
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <a href="#" class="view-btn">
+                                View
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+    </main>
+
+
+</body>
+
+</html>

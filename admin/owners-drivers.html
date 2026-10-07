@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Owners & Drivers - BUSARO Admin</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #111827;
+            color: white;
+            padding: 25px 18px;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: #4f9cff;
+            margin-bottom: 10px;
+        }
+
+        .admin-title {
+            text-align: center;
+            color: #9ca3af;
+            font-size: 13px;
+            margin-bottom: 30px;
+        }
+
+        .menu a {
+            display: block;
+            padding: 13px 15px;
+            margin-bottom: 7px;
+            color: #d1d5db;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: #1769e0;
+            color: white;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .topbar h1 {
+            font-size: 30px;
+            margin-bottom: 5px;
+        }
+
+        .topbar p {
+            color: #777;
+        }
+
+        .admin-user {
+            background: white;
+            padding: 11px 18px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+        }
+
+        /* SUMMARY */
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .summary-card span {
+            color: #777;
+            font-size: 13px;
+        }
+
+        .summary-card h2 {
+            margin-top: 8px;
+            color: #1769e0;
+            font-size: 25px;
+        }
+
+        /* TOOLBAR */
+
+        .toolbar {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .search {
+            width: 350px;
+            padding: 11px 14px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            outline: none;
+        }
+
+        .filter {
+            padding: 11px 14px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            background: white;
+        }
+
+        .add-btn {
+            background: #1769e0;
+            color: white;
+            border: none;
+            padding: 11px 17px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .add-btn:hover {
+            background: #1255b8;
+        }
+
+        /* TABLE */
+
+        .table-container {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            overflow-x: auto;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.06);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1050px;
+        }
+
+        th,
+        td {
+            padding: 15px 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+        }
+
+        th {
+            color: #555;
+            background: #f8fafc;
+        }
+
+        td {
+            color: #444;
+        }
+
+        .id {
+            color: #1769e0;
+            font-weight: bold;
+        }
+
+        .name {
+            font-weight: bold;
+            color: #222;
+        }
+
+        /* STATUS */
+
+        .status {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .verified {
+            background: #dff7e6;
+            color: #16803c;
+        }
+
+        .pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .available {
+            background: #e8f1ff;
+            color: #1769e0;
+        }
+
+        .busy {
+            background: #ffe5e5;
+            color: #d63031;
+        }
+
+        /* ACTIONS */
+
+        .view-btn,
+        .edit-btn {
+            text-decoration: none;
+            padding: 7px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .view-btn {
+            background: #e8f1ff;
+            color: #1769e0;
+        }
+
+        .edit-btn {
+            background: #fff3cd;
+            color: #856404;
+            margin-left: 4px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 1000px) {
+
+            .summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .summary {
+                grid-template-columns: 1fr;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search {
+                width: 100%;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            BUSARO
+        </div>
+
+        <div class="admin-title">
+            ADMIN PANEL
+        </div>
+
+        <div class="menu">
+
+            <a href="index.html">
+                Dashboard
+            </a>
+
+            <a href="vehicles.html">
+                🚍 Vehicles
+            </a>
+
+            <a href="tours.html">
+                🗺️ Tours
+            </a>
+
+            <a href="places.html">
+                📍 Tourist Places
+            </a>
+
+            <a href="bookings.html">
+                📅 Bookings
+            </a>
+
+            <a href="customers.html">
+                👥 Customers
+            </a>
+
+            <a href="owners-drivers.html" class="active">
+                👨‍✈️ Owners & Drivers
+            </a>
+
+            <a href="#">
+                💰 Payments
+            </a>
+
+            <a href="#">
+                💵 Pricing
+            </a>
+
+            <a href="#">
+                ⚙️ Settings
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+        <!-- TOPBAR -->
+
+        <div class="topbar">
+
+            <div>
+
+                <h1>
+                    Owners & Drivers
+                </h1>
+
+                <p>
+                    Manage vehicle owners and drivers
+                </p>
+
+            </div>
+
+            <div class="admin-user">
+                👤 Admin
+            </div>
+
+        </div>
+
+
+        <!-- SUMMARY -->
+
+        <section class="summary">
+
+            <div class="summary-card">
+
+                <span>
+                    Total Owners
+                </span>
+
+                <h2>
+                    18
+                </h2>
+
+            </div>
+
+            <div class="summary-card">
+
+                <span>
+                    Total Drivers
+                </span>
+
+                <h2>
+                    32
+                </h2>
+
+            </div>
+
+            <div class="summary-card">
+
+                <span>
+                    Verified
+                </span>
+
+                <h2>
+                    45
+                </h2>
+
+            </div>
+
+            <div class="summary-card">
+
+                <span>
+                    Available Drivers
+                </span>
+
+                <h2>
+                    24
+                </h2>
+
+            </div>
+
+        </section>
+
+
+        <!-- TOOLBAR -->
+
+        <div class="toolbar">
+
+            <input
+                type="text"
+                class="search"
+                placeholder="Search owner, driver or vehicle..."
+            >
+
+            <select class="filter">
+
+                <option>
+                    All Types
+                </option>
+
+                <option>
+                    Owners
+                </option>
+
+                <option>
+                    Drivers
+                </option>
+
+            </select>
+
+            <select class="filter">
+
+                <option>
+                    All Status
+                </option>
+
+                <option>
+                    Verified
+                </option>
+
+                <option>
+                    Pending
+                </option>
+
+            </select>
+
+            <button class="add-btn">
+                + Add Owner / Driver
+            </button>
+
+        </div>
+
+
+        <!-- TABLE -->
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            ID
+                        </th>
+
+                        <th>
+                            Owner Name
+                        </th>
+
+                        <th>
+                            Driver Name
+                        </th>
+
+                        <th>
+                            Mobile
+                        </th>
+
+                        <th>
+                            Vehicle
+                        </th>
+
+                        <th>
+                            Type
+                        </th>
+
+                        <th>
+                            Experience
+                        </th>
+
+                        <th>
+                            Verification
+                        </th>
+
+                        <th>
+                            Availability
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    <!-- ROW 1 -->
+
+                    <tr>
+
+                        <td class="id">
+                            OD-1001
+                        </td>
+
+                        <td class="name">
+                            Suresh Travels
+                        </td>
+
+                        <td>
+                            Suresh Kumar
+                        </td>
+
+                        <td>
+                            9876543210
+                        </td>
+
+                        <td>
+                            BUSARO Premium Coach
+                        </td>
+
+                        <td>
+                            Tourist Bus
+                        </td>
+
+                        <td>
+                            10 Years
+                        </td>
+
+                        <td>
+
+                            <span class="status verified">
+                                Verified
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status available">
+                                Available
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <a href="#" class="view-btn">
+                                View
+                            </a>
+
+                            <a href="#" class="edit-btn">
+                                Edit
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- ROW 2 -->
+
+                    <tr>
+
+                        <td class="id">
+                            OD-1002
+                        </td>
+
+                        <td class="name">
+                            Green Line Travels
+                        </td>
+
+                        <td>
+                            Rajesh
+                        </td>
+
+                        <td>
+                            9988776655
+                        </td>
+
+                        <td>
+                            BUSARO Group Traveller
+                        </td>
+
+                        <td>
+                            Coach Van
+                        </td>
+
+                        <td>
+                            7 Years
+                        </td>
+
+                        <td>
+
+                            <span class="status verified">
+                                Verified
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status busy">
+                                On Trip
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <a href="#" class="view-btn">
+                                View
+                            </a>
+
+                            <a href="#" class="edit-btn">
+                                Edit
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- ROW 3 -->
+
+                    <tr>
+
+                        <td class="id">
+                            OD-1003
+                        </td>
+
+                        <td class="name">
+                            Star Travels
+                        </td>
+
+                        <td>
+                            Prakash
+                        </td>
+
+                        <td>
+                            9123456780
+                        </td>
+
+                        <td>
+                            BUSARO Comfort Sedan
+                        </td>
+
+                        <td>
+                            Car
+                        </td>
+
+                        <td>
+                            5 Years
+                        </td>
+
+                        <td>
+
+                            <span class="status verified">
+                                Verified
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status available">
+                                Available
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <a href="#" class="view-btn">
+                                View
+                            </a>
+
+                            <a href="#" class="edit-btn">
+                                Edit
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- ROW 4 -->
+
+                    <tr>
+
+                        <td class="id">
+                            OD-1004
+                        </td>
+
+                        <td class="name">
+                            Kumar Travels
+                        </td>
+
+                        <td>
+                            Manoj
+                        </td>
+
+                        <td>
+                            9000012345
+                        </td>
+
+                        <td>
+                            BUSARO Grand Traveller
+                        </td>
+
+                        <td>
+                            Tourist Bus
+                        </td>
+
+                        <td>
+                            8 Years
+                        </td>
+
+                        <td>
+
+                            <span class="status pending">
+                                Pending
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status available">
+                                Available
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <a href="#" class="view-btn">
+                                View
+                            </a>
+
+                            <a href="#" class="edit-btn">
+                                Edit
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- ROW 5 -->
+
+                    <tr>
+
+                        <td class="id">
+                            OD-1005
+                        </td>
+
+                        <td class="name">
+                            City Ride
+                        </td>
+
+                        <td>
+                            Vignesh
+                        </td>
+
+                        <td>
+                            9345678901
+                        </td>
+
+                        <td>
+                            Family Traveller Van
+                        </td>
+
+                        <td>
+                            Coach Van
+                        </td>
+
+                        <td>
+                            6 Years
+                        </td>
+
+                        <td>
+
+                            <span class="status verified">
+                                Verified
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status available">
+                                Available
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <a href="#" class="view-btn">
+                                View
+                            </a>
+
+                            <a href="#" class="edit-btn">
+                                Edit
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>

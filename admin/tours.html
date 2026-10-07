@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tours Management - BUSARO Admin</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+
+            width: 250px;
+            height: 100vh;
+
+            background: #111827;
+            color: white;
+
+            padding: 25px 18px;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: #4f9cff;
+            margin-bottom: 10px;
+        }
+
+        .admin-title {
+            text-align: center;
+            color: #9ca3af;
+            font-size: 13px;
+            margin-bottom: 30px;
+        }
+
+        .menu a {
+            display: block;
+            padding: 13px 15px;
+            margin-bottom: 7px;
+
+            color: #d1d5db;
+            text-decoration: none;
+
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: #1769e0;
+            color: white;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 30px;
+        }
+
+        .topbar h1 {
+            font-size: 30px;
+            margin-bottom: 5px;
+        }
+
+        .topbar p {
+            color: #777;
+        }
+
+        .admin-user {
+            background: white;
+            padding: 11px 18px;
+
+            border-radius: 8px;
+
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        /* TOOLBAR */
+
+        .toolbar {
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 12px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 25px;
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .filter {
+            padding: 10px 14px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 7px;
+
+            background: white;
+        }
+
+        .add-btn {
+            background: #1769e0;
+
+            color: white;
+
+            text-decoration: none;
+
+            padding: 11px 18px;
+
+            border-radius: 7px;
+
+            font-weight: bold;
+        }
+
+        /* TOUR GRID */
+
+        .tour-grid {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 22px;
+        }
+
+        .tour-card {
+            background: white;
+
+            border-radius: 14px;
+
+            overflow: hidden;
+
+            box-shadow: 0 5px 18px rgba(0,0,0,0.06);
+        }
+
+        .tour-card img {
+            width: 100%;
+            height: 190px;
+
+            object-fit: cover;
+        }
+
+        .tour-content {
+            padding: 20px;
+        }
+
+        .tour-content h2 {
+            font-size: 19px;
+            margin-bottom: 8px;
+        }
+
+        .tour-type {
+            color: #1769e0;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            margin-bottom: 15px;
+        }
+
+        .description {
+            color: #666;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+
+            margin-bottom: 15px;
+        }
+
+        .details {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 10px;
+
+            margin-bottom: 15px;
+        }
+
+        .detail {
+            background: #f5f7fa;
+
+            padding: 10px;
+
+            border-radius: 7px;
+
+            font-size: 13px;
+        }
+
+        .detail span {
+            display: block;
+
+            color: #777;
+
+            font-size: 11px;
+
+            margin-bottom: 4px;
+        }
+
+        .price {
+            color: #1769e0;
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+            margin-bottom: 15px;
+        }
+
+        .actions {
+            display: flex;
+
+            gap: 8px;
+        }
+
+        .edit,
+        .delete {
+            flex: 1;
+
+            text-align: center;
+
+            padding: 9px;
+
+            border-radius: 7px;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: bold;
+        }
+
+        .edit {
+            background: #e8f1ff;
+            color: #1769e0;
+        }
+
+        .delete {
+            background: #ffe8e8;
+            color: #d63031;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 1000px) {
+
+            .tour-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .tour-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            BUSARO
+        </div>
+
+        <div class="admin-title">
+            ADMIN PANEL
+        </div>
+
+
+        <div class="menu">
+
+            <a href="index.html">
+                Dashboard
+            </a>
+
+            <a href="vehicles.html">
+                🚍 Vehicles
+            </a>
+
+            <a href="tours.html" class="active">
+                🗺️ Tours
+            </a>
+
+            <a href="#">
+                📍 Tourist Places
+            </a>
+
+            <a href="#">
+                📅 Bookings
+            </a>
+
+            <a href="#">
+                👥 Customers
+            </a>
+
+            <a href="#">
+                👨‍✈️ Owners & Drivers
+            </a>
+
+            <a href="#">
+                💰 Payments
+            </a>
+
+            <a href="#">
+                💵 Pricing
+            </a>
+
+            <a href="#">
+                ⚙️ Settings
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+
+        <div class="topbar">
+
+            <div>
+
+                <h1>
+                    Tours
+                </h1>
+
+                <p>
+                    Manage BUSARO tour packages
+                </p>
+
+            </div>
+
+
+            <div class="admin-user">
+                👤 Admin
+            </div>
+
+        </div>
+
+
+        <!-- TOOLBAR -->
+
+        <div class="toolbar">
+
+            <select class="filter">
+
+                <option>
+                    All Tours
+                </option>
+
+                <option>
+                    College IV
+                </option>
+
+                <option>
+                    Tourist Tours
+                </option>
+
+                <option>
+                    Family Tours
+                </option>
+
+                <option>
+                    Custom Trips
+                </option>
+
+            </select>
+
+
+            <a href="#" class="add-btn">
+                + Add Tour
+            </a>
+
+        </div>
+
+
+        <!-- TOUR GRID -->
+
+        <div class="tour-grid">
+
+
+            <!-- OOTY -->
+
+            <div class="tour-card">
+
+                <img
+                    src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=900&q=80"
+                    alt="Ooty Tour"
+                >
+
+                <div class="tour-content">
+
+                    <h2>
+                        Ooty Explorer
+                    </h2>
+
+                    <div class="tour-type">
+                        Tourist Tour
+                    </div>
+
+                    <p class="description">
+                        Explore Ooty with comfortable transportation
+                        and a planned sightseeing experience.
+                    </p>
+
+                    <div class="details">
+
+                        <div class="detail">
+                            <span>Duration</span>
+                            2 Days / 1 Night
+                        </div>
+
+                        <div class="detail">
+                            <span>Starting Point</span>
+                            Coimbatore
+                        </div>
+
+                        <div class="detail">
+                            <span>Destination</span>
+                            Ooty
+                        </div>
+
+                        <div class="detail">
+                            <span>Status</span>
+                            Active
+                        </div>
+
+                    </div>
+
+                    <div class="price">
+                        From ₹8,000
+                    </div>
+
+                    <div class="actions">
+
+                        <a href="#" class="edit">
+                            Edit
+                        </a>
+
+                        <a href="#" class="delete">
+                            Delete
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- MUNNAR -->
+
+            <div class="tour-card">
+
+                <img
+                    src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=900&q=80"
+                    alt="Munnar Tour"
+                >
+
+                <div class="tour-content">
+
+                    <h2>
+                        Munnar Escape
+                    </h2>
+
+                    <div class="tour-type">
+                        Tourist Tour
+                    </div>
+
+                    <p class="description">
+                        Enjoy a refreshing Munnar trip with
+                        scenic destinations and comfortable travel.
+                    </p>
+
+                    <div class="details">
+
+                        <div class="detail">
+                            <span>Duration</span>
+                            3 Days / 2 Nights
+                        </div>
+
+                        <div class="detail">
+                            <span>Starting Point</span>
+                            Coimbatore
+                        </div>
+
+                        <div class="detail">
+                            <span>Destination</span>
+                            Munnar
+                        </div>
+
+                        <div class="detail">
+                            <span>Status</span>
+                            Active
+                        </div>
+
+                    </div>
+
+                    <div class="price">
+                        From ₹12,000
+                    </div>
+
+                    <div class="actions">
+
+                        <a href="#" class="edit">
+                            Edit
+                        </a>
+
+                        <a href="#" class="delete">
+                            Delete
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- KANYAKUMARI -->
+
+            <div class="tour-card">
+
+                <img
+                    src="https://images.unsplash.com/photo-1590766940558-9e6d9c7c1a5d?auto=format&fit=crop&w=900&q=80"
+                    alt="Kanyakumari Tour"
+                >
+
+                <div class="tour-content">
+
+                    <h2>
+                        Kanyakumari Trip
+                    </h2>
+
+                    <div class="tour-type">
+                        Tourist Tour
+                    </div>
+
+                    <p class="description">
+                        Discover the southern tip of India
+                        with a complete group travel package.
+                    </p>
+
+                    <div class="details">
+
+                        <div class="detail">
+                            <span>Duration</span>
+                            2 Days / 1 Night
+                        </div>
+
+                        <div class="detail">
+                            <span>Starting Point</span>
+                            Coimbatore
+                        </div>
+
+                        <div class="detail">
+                            <span>Destination</span>
+                            Kanyakumari
+                        </div>
+
+                        <div class="detail">
+                            <span>Status</span>
+                            Active
+                        </div>
+
+                    </div>
+
+                    <div class="price">
+                        From ₹10,000
+                    </div>
+
+                    <div class="actions">
+
+                        <a href="#" class="edit">
+                            Edit
+                        </a>
+
+                        <a href="#" class="delete">
+                            Delete
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- COLLEGE IV -->
+
+            <div class="tour-card">
+
+                <img
+                    src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=80"
+                    alt="College Industrial Visit"
+                >
+
+                <div class="tour-content">
+
+                    <h2>
+                        College Industrial Visit
+                    </h2>
+
+                    <div class="tour-type">
+                        College IV
+                    </div>
+
+                    <p class="description">
+                        Group transportation solution for
+                        college industrial visits and educational trips.
+                    </p>
+
+                    <div class="details">
+
+                        <div class="detail">
+                            <span>Duration</span>
+                            Custom
+                        </div>
+
+                        <div class="detail">
+                            <span>Passengers</span>
+                            20 - 60+
+                        </div>
+
+                        <div class="detail">
+                            <span>Vehicle</span>
+                            Tourist Bus
+                        </div>
+
+                        <div class="detail">
+                            <span>Status</span>
+                            Active
+                        </div>
+
+                    </div>
+
+                    <div class="price">
+                        Custom Pricing
+                    </div>
+
+                    <div class="actions">
+
+                        <a href="#" class="edit">
+                            Edit
+                        </a>
+
+                        <a href="#" class="delete">
+                            Delete
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- FAMILY -->
+
+            <div class="tour-card">
+
+                <img
+                    src="https://images.unsplash.com/photo-1504150558240-0b4fd8946624?auto=format&fit=crop&w=900&q=80"
+                    alt="Family Tour"
+                >
+
+                <div class="tour-content">
+
+                    <h2>
+                        Family Getaway
+                    </h2>
+
+                    <div class="tour-type">
+                        Family Tour
+                    </div>
+
+                    <p class="description">
+                        Flexible family travel with cars,
+                        coach vans and customized destinations.
+                    </p>
+
+                    <div class="details">
+
+                        <div class="detail">
+                            <span>Group Size</span>
+                            4 - 15
+                        </div>
+
+                        <div class="detail">
+                            <span>Vehicle</span>
+                            Car / Coach Van
+                        </div>
+
+                        <div class="detail">
+                            <span>Destination</span>
+                            Custom
+                        </div>
+
+                        <div class="detail">
+                            <span>Status</span>
+                            Active
+                        </div>
+
+                    </div>
+
+                    <div class="price">
+                        Custom Pricing
+                    </div>
+
+                    <div class="actions">
+
+                        <a href="#" class="edit">
+                            Edit
+                        </a>
+
+                        <a href="#" class="delete">
+                            Delete
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CUSTOM -->
+
+            <div class="tour-card">
+
+                <img
+                    src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80"
+                    alt="Custom Trip"
+                >
+
+                <div class="tour-content">
+
+                    <h2>
+                        Build Your Own Trip
+                    </h2>
+
+                    <div class="tour-type">
+                        Custom Trip
+                    </div>
+
+                    <p class="description">
+                        Create a personalized journey by selecting
+                        destinations, dates and suitable vehicles.
+                    </p>
+
+                    <div class="details">
+
+                        <div class="detail">
+                            <span>Destination</span>
+                            Custom
+                        </div>
+
+                        <div class="detail">
+                            <span>Vehicle</span>
+                            Bus / Van / Car
+                        </div>
+
+                        <div class="detail">
+                            <span>Duration</span>
+                            Custom
+                        </div>
+
+                        <div class="detail">
+                            <span>Status</span>
+                            Active
+                        </div>
+
+                    </div>
+
+                    <div class="price">
+                        Distance Based
+                    </div>
+
+                    <div class="actions">
+
+                        <a href="#" class="edit">
+                            Edit
+                        </a>
+
+                        <a href="#" class="delete">
+                            Delete
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </main>
+
+
+</body>
+
+</html>

@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BUSARO | Tours</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f6f8fb;
+            color: #172033;
+        }
+
+        /* NAVBAR */
+        nav {
+            padding: 18px 7%;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1261ff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #172033;
+            font-weight: 600;
+        }
+
+        .login {
+            background: #1261ff;
+            color: white !important;
+            padding: 10px 18px;
+            border-radius: 8px;
+        }
+
+        /* HEADER */
+        .page-header {
+            padding: 70px 7%;
+            background:
+                linear-gradient(rgba(10,25,55,0.75), rgba(10,25,55,0.75)),
+                url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80");
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .page-header p {
+            font-size: 18px;
+            color: #e5eaff;
+        }
+
+        /* FILTER */
+        .filters {
+            padding: 35px 7%;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 11px 20px;
+            border: 1px solid #d9dfeb;
+            background: white;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: #1261ff;
+            color: white;
+            border-color: #1261ff;
+        }
+
+        /* TOUR GRID */
+        .tour-section {
+            padding: 20px 7% 70px;
+        }
+
+        .tour-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .tour-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+        .tour-card:hover {
+            transform: translateY(-7px);
+        }
+
+        .tour-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .tour-content {
+            padding: 22px;
+        }
+
+        .tour-type {
+            display: inline-block;
+            background: #eaf1ff;
+            color: #1261ff;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .tour-content h2 {
+            margin-bottom: 10px;
+        }
+
+        .tour-content p {
+            color: #697386;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .tour-info {
+            margin: 18px 0;
+            padding: 15px 0;
+            border-top: 1px solid #edf0f5;
+            border-bottom: 1px solid #edf0f5;
+            display: flex;
+            justify-content: space-between;
+            color: #596579;
+            font-size: 14px;
+        }
+
+        .tour-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #172033;
+        }
+
+        .price small {
+            font-size: 12px;
+            color: #697386;
+            font-weight: normal;
+        }
+
+        .book-btn {
+            text-decoration: none;
+            background: #1261ff;
+            color: white;
+            padding: 11px 17px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #101827;
+            color: white;
+            text-align: center;
+            padding: 35px;
+        }
+
+        footer p {
+            color: #aeb7c7;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        /* MOBILE */
+        @media (max-width: 900px) {
+            .tour-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .tour-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+
+        <div class="logo">BUSARO</div>
+
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="tours.html">Tours</a>
+            <a href="vehicles.html">Vehicles</a>
+            <a href="places.html">Places</a>
+            <a href="booking.html">My Booking</a>
+            <a href="login.html" class="login">Login</a>
+        </div>
+
+    </nav>
+
+
+    <!-- HEADER -->
+    <section class="page-header">
+
+        <h1>Explore BUSARO Tours</h1>
+
+        <p>
+            College trips, tourist packages and family journeys.
+        </p>
+
+    </section>
+
+
+    <!-- FILTERS -->
+    <div class="filters">
+
+        <button class="filter-btn active">All Tours</button>
+
+        <button class="filter-btn">College IV</button>
+
+        <button class="filter-btn">Tourist</button>
+
+        <button class="filter-btn">Family</button>
+
+    </div>
+
+
+    <!-- TOUR CARDS -->
+    <section class="tour-section">
+
+        <div class="tour-grid">
+
+
+            <!-- OOTY -->
+            <div class="tour-card">
+
+                <img
+                    class="tour-image"
+                    src="https://images.unsplash.com/photo-1597074866923-dc0589150358?auto=format&fit=crop&w=900&q=80"
+                    alt="Ooty"
+                >
+
+                <div class="tour-content">
+
+                    <span class="tour-type">TOURIST TOUR</span>
+
+                    <h2>Ooty Explorer</h2>
+
+                    <p>
+                        Enjoy the beautiful hills, nature and
+                        popular attractions of Ooty.
+                    </p>
+
+                    <div class="tour-info">
+                        <span>📅 2 Days</span>
+                        <span>📍 Ooty</span>
+                    </div>
+
+                    <div class="tour-bottom">
+
+                        <div class="price">
+                            ₹5,999
+                            <small>/ group</small>
+                        </div>
+
+                        <a href="booking.html" class="book-btn">
+                            View Tour
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- MUNNAR -->
+            <div class="tour-card">
+
+                <img
+                    class="tour-image"
+                    src="https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=900&q=80"
+                    alt="Munnar"
+                >
+
+                <div class="tour-content">
+
+                    <span class="tour-type">TOURIST TOUR</span>
+
+                    <h2>Munnar Escape</h2>
+
+                    <p>
+                        Explore tea gardens, mountains and
+                        scenic places around Munnar.
+                    </p>
+
+                    <div class="tour-info">
+                        <span>📅 3 Days</span>
+                        <span>📍 Munnar</span>
+                    </div>
+
+                    <div class="tour-bottom">
+
+                        <div class="price">
+                            ₹7,999
+                            <small>/ group</small>
+                        </div>
+
+                        <a href="booking.html" class="book-btn">
+                            View Tour
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- KANYAKUMARI -->
+            <div class="tour-card">
+
+                <img
+                    class="tour-image"
+                    src="https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=900&q=80"
+                    alt="Kanyakumari"
+                >
+
+                <div class="tour-content">
+
+                    <span class="tour-type">FAMILY TOUR</span>
+
+                    <h2>Kanyakumari Trip</h2>
+
+                    <p>
+                        Discover beaches, temples and the
+                        beautiful southern tip of India.
+                    </p>
+
+                    <div class="tour-info">
+                        <span>📅 2 Days</span>
+                        <span>📍 Kanyakumari</span>
+                    </div>
+
+                    <div class="tour-bottom">
+
+                        <div class="price">
+                            ₹6,499
+                            <small>/ group</small>
+                        </div>
+
+                        <a href="booking.html" class="book-btn">
+                            View Tour
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- COLLEGE IV -->
+            <div class="tour-card">
+
+                <img
+                    class="tour-image"
+                    src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=80"
+                    alt="College students"
+                >
+
+                <div class="tour-content">
+
+                    <span class="tour-type">COLLEGE IV</span>
+
+                    <h2>College Industrial Visit</h2>
+
+                    <p>
+                        Arrange buses and complete travel
+                        support for college industrial visits.
+                    </p>
+
+                    <div class="tour-info">
+                        <span>👥 40–70 Seats</span>
+                        <span>🚌 Bus</span>
+                    </div>
+
+                    <div class="tour-bottom">
+
+                        <div class="price">
+                            Custom
+                            <small> pricing</small>
+                        </div>
+
+                        <a href="booking.html" class="book-btn">
+                            Plan Trip
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- FAMILY -->
+            <div class="tour-card">
+
+                <img
+                    class="tour-image"
+                    src="https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=900&q=80"
+                    alt="Family travel"
+                >
+
+                <div class="tour-content">
+
+                    <span class="tour-type">FAMILY TOUR</span>
+
+                    <h2>Family Getaway</h2>
+
+                    <p>
+                        Comfortable travel options for
+                        families and small groups.
+                    </p>
+
+                    <div class="tour-info">
+                        <span>👥 Up to 10</span>
+                        <span>🚐 Car / Van</span>
+                    </div>
+
+                    <div class="tour-bottom">
+
+                        <div class="price">
+                            Custom
+                            <small> pricing</small>
+                        </div>
+
+                        <a href="booking.html" class="book-btn">
+                            Plan Trip
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CUSTOM TOUR -->
+            <div class="tour-card">
+
+                <img
+                    class="tour-image"
+                    src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=80"
+                    alt="Custom tour"
+                >
+
+                <div class="tour-content">
+
+                    <span class="tour-type">CUSTOM TOUR</span>
+
+                    <h2>Build Your Own Trip</h2>
+
+                    <p>
+                        Choose your destination, vehicle,
+                        dates and travel requirements.
+                    </p>
+
+                    <div class="tour-info">
+                        <span>🗺️ Custom</span>
+                        <span>🚍 Any Vehicle</span>
+                    </div>
+
+                    <div class="tour-bottom">
+
+                        <div class="price">
+                            Custom
+                            <small> pricing</small>
+                        </div>
+
+                        <a href="booking.html" class="book-btn">
+                            Create Trip
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        <h3>BUSARO</h3>
+
+        <p>
+            Smart Travel & Vehicle Booking Platform
+        </p>
+
+        <p>
+            © 2026 BUSARO. All Rights Reserved.
+        </p>
+
+    </footer>
+
+</body>
+</html>

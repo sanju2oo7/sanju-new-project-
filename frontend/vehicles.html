@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BUSARO | Vehicles</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f6f8fb;
+            color: #172033;
+        }
+
+        /* NAVBAR */
+        nav {
+            padding: 18px 7%;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1261ff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #172033;
+            font-weight: 600;
+        }
+
+        .login {
+            background: #1261ff;
+            color: white !important;
+            padding: 10px 18px;
+            border-radius: 8px;
+        }
+
+        /* HEADER */
+        .header {
+            padding: 70px 7%;
+            text-align: center;
+            background: #101827;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .header p {
+            color: #cbd3e2;
+            font-size: 17px;
+        }
+
+        /* CATEGORY */
+        .categories {
+            padding: 35px 7%;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .category {
+            padding: 11px 22px;
+            border: 1px solid #d8deea;
+            background: white;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .category.active,
+        .category:hover {
+            background: #1261ff;
+            color: white;
+            border-color: #1261ff;
+        }
+
+        /* VEHICLES */
+        .vehicle-section {
+            padding: 20px 7% 70px;
+        }
+
+        .vehicle-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .vehicle-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+        .vehicle-card:hover {
+            transform: translateY(-7px);
+        }
+
+        .vehicle-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .vehicle-content {
+            padding: 22px;
+        }
+
+        .vehicle-type {
+            display: inline-block;
+            background: #eaf1ff;
+            color: #1261ff;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .vehicle-content h2 {
+            margin-bottom: 12px;
+        }
+
+        .vehicle-content p {
+            color: #697386;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .details {
+            margin: 18px 0;
+            padding: 15px 0;
+            border-top: 1px solid #edf0f5;
+            border-bottom: 1px solid #edf0f5;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+
+            font-size: 14px;
+            color: #596579;
+        }
+
+        .detail strong {
+            color: #172033;
+        }
+
+        .vehicle-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status {
+            color: #16834b;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .book-btn {
+            text-decoration: none;
+            background: #1261ff;
+            color: white;
+            padding: 11px 17px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #101827;
+            color: white;
+            text-align: center;
+            padding: 35px;
+        }
+
+        footer p {
+            color: #aeb7c7;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        /* MOBILE */
+        @media (max-width: 900px) {
+
+            .vehicle-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .vehicle-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav>
+
+        <div class="logo">
+            BUSARO
+        </div>
+
+        <div class="nav-links">
+
+            <a href="index.html">Home</a>
+
+            <a href="tours.html">Tours</a>
+
+            <a href="vehicles.html">Vehicles</a>
+
+            <a href="places.html">Places</a>
+
+            <a href="booking.html">My Booking</a>
+
+            <a href="login.html" class="login">
+                Login
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- HEADER -->
+
+    <section class="header">
+
+        <h1>Choose Your Vehicle</h1>
+
+        <p>
+            Buses, choach vans and cars for every type of journey.
+        </p>
+
+    </section>
+
+
+    <!-- CATEGORIES -->
+
+    <div class="categories">
+
+        <button class="category active">
+            All Vehicles
+        </button>
+
+        <button class="category">
+            🚌 Buses
+        </button>
+
+        <button class="category">
+            🚐 choach Vans
+        </button>
+
+        <button class="category">
+            🚗 Cars
+        </button>
+
+    </div>
+
+
+    <!-- VEHICLE LIST -->
+
+    <section class="vehicle-section">
+
+        <div class="vehicle-grid">
+
+
+            <!-- BUS 1 -->
+
+            <div class="vehicle-card">
+
+                <img
+                    class="vehicle-image"
+                    src="https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=900&q=80"
+                    alt="Tourist Bus"
+                >
+
+                <div class="vehicle-content">
+
+                    <span class="vehicle-type">
+                        TOURIST BUS
+                    </span>
+
+                    <h2>
+                        BUSARO Premium Coach
+                    </h2>
+
+                    <p>
+                        Comfortable tourist bus suitable for
+                        college IV, industrial visits and group tours.
+                    </p>
+
+                    <div class="details">
+
+                        <div class="detail">
+                            👥 <strong>50 Seats</strong>
+                        </div>
+
+                        <div class="detail">
+                            ❄️ <strong>AC</strong>
+                        </div>
+
+                        <div class="detail">
+                            🧑‍✈️ Driver
+                        </div>
+
+                        <div class="detail">
+                            🚌 Tourist Bus
+                        </div>
+
+                    </div>
+
+                    <div class="vehicle-bottom">
+
+                        <span class="status">
+                            ● Available
+                        </span>
+
+                        <a
+                            href="booking.html"
+                            class="book-btn"
+                        >
+                            Book
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- BUS 2 -->
+
+            <div class="vehicle-card">
+
+                <img
+                    class="vehicle-image"
+                    src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=900&q=80"
+                    alt="Tour Bus"
+                >
+
+                <div class="vehicle-content">
+
+                    <span class="vehicle-type">
+                        TOURIST BUS
+                    </span>
+
+                    <h2>
+                        BUSARO Grand Traveller
+                    </h2>
+
+                    <p>
+                        Spacious bus designed for large groups,
+                        family tours and college trips.
+                    </p>
+
+                    <div class="details">
+
+                        <div class="detail">
+                            👥 <strong>60 Seats</strong>
+                        </div>
+
+                        <div class="detail">
+                            ❄️ <strong>AC</strong>
+                        </div>
+
+                        <div class="detail">
+                            🧑‍✈️ Driver
+                        </div>
+
+                        <div class="detail">
+                            🚌 Tourist Bus
+                        </div>
+
+                    </div>
+
+                    <div class="vehicle-bottom">
+
+                        <span class="status">
+                            ● Available
+                        </span>
+
+                        <a
+                            href="booking.html"
+                            class="book-btn"
+                        >
+                            Book
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- choach VAN -->
+
+            <div class="vehicle-card">
+
+                <img
+                    class="vehicle-image"
+                    src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=900&q=80"
+                    alt="choach Van"
+                >
+
+                <div class="vehicle-content">
+
+                    <span class="vehicle-type">
+                        choach VAN
+                    </span>
+
+                    <h2>
+                        Family Traveller Van
+                    </h2>
+
+                    <p>
+                        Comfortable choach van for family trips,
+                        small groups and local travel.
+                    </p>
+
+                    <div class="details">
+
+                        <div class="detail">
+                            👥 <strong>12 Seats</strong>
+                        </div>
+
+                        <div class="detail">
+                            ❄️ <strong>AC</strong>
+                        </div>
+
+                        <div class="detail">
+                            🧑‍✈️ Driver
+                        </div>
+
+                        <div class="detail">
+                            🚐 choach Vans
+                        </div>
+
+                    </div>
+
+                    <div class="vehicle-bottom">
+
+                        <span class="status">
+                            ● Available
+                        </span>
+
+                        <a
+                            href="booking.html"
+                            class="book-btn"
+                        >
+                            Book
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CAR -->
+
+            <div class="vehicle-card">
+
+                <img
+                    class="vehicle-image"
+                    src="https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=900&q=80"
+                    alt="Car"
+                >
+
+                <div class="vehicle-content">
+
+                    <span class="vehicle-type">
+                        CAR
+                    </span>
+
+                    <h2>
+                        Comfort Sedan
+                    </h2>
+
+                    <p>
+                        A comfortable option for small families,
+                        couples and personal travel.
+                    </p>
+
+                    <div class="details">
+
+                        <div class="detail">
+                            👥 <strong>4 Seats</strong>
+                        </div>
+
+                        <div class="detail">
+                            ❄️ <strong>AC</strong>
+                        </div>
+
+                        <div class="detail">
+                            🧑‍✈️ Driver
+                        </div>
+
+                        <div class="detail">
+                            🚗 Car
+                        </div>
+
+                    </div>
+
+                    <div class="vehicle-bottom">
+
+                        <span class="status">
+                            ● Available
+                        </span>
+
+                        <a
+                            href="booking.html"
+                            class="book-btn"
+                        >
+                            Book
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- SUV -->
+
+            <div class="vehicle-card">
+
+                <img
+                    class="vehicle-image"
+                    src="https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=900&q=80"
+                    alt="SUV"
+                >
+
+                <div class="vehicle-content">
+
+                    <span class="vehicle-type">
+                        SUV
+                    </span>
+
+                    <h2>
+                        Premium SUV
+                    </h2>
+
+                    <p>
+                        Premium SUV for comfortable family
+                        tours and long-distance travel.
+                    </p>
+
+                    <div class="details">
+
+                        <div class="detail">
+                            👥 <strong>6 Seats</strong>
+                        </div>
+
+                        <div class="detail">
+                            ❄️ <strong>AC</strong>
+                        </div>
+
+                        <div class="detail">
+                            🧑‍✈️ Driver
+                        </div>
+
+                        <div class="detail">
+                            🚙 SUV
+                        </div>
+
+                    </div>
+
+                    <div class="vehicle-bottom">
+
+                        <span class="status">
+                            ● Available
+                        </span>
+
+                        <a
+                            href="booking.html"
+                            class="book-btn"
+                        >
+                            Book
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- SMALL TRAVEL -->
+
+            <div class="vehicle-card">
+
+                <img
+                    class="vehicle-image"
+                    src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=900&q=80"
+                    alt="Travel Vehicle"
+                >
+
+                <div class="vehicle-content">
+
+                    <span class="vehicle-type">
+                        SMALL TRAVELS
+                    </span>
+
+                    <h2>
+                        Group Travel Van
+                    </h2>
+
+                    <p>
+                        Flexible travel vehicle for small groups,
+                        events and family journeys.
+                    </p>
+
+                    <div class="details">
+
+                        <div class="detail">
+                            👥 <strong>15 Seats</strong>
+                        </div>
+
+                        <div class="detail">
+                            ❄️ <strong>AC</strong>
+                        </div>
+
+                        <div class="detail">
+                            🧑‍✈️ Driver
+                        </div>
+
+                        <div class="detail">
+                            🚐 Travels
+                        </div>
+
+                    </div>
+
+                    <div class="vehicle-bottom">
+
+                        <span class="status">
+                            ● Available
+                        </span>
+
+                        <a
+                            href="booking.html"
+                            class="book-btn"
+                        >
+                            Book
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <h3>BUSARO</h3>
+
+        <p>
+            Smart Travel & Vehicle Booking Platform
+        </p>
+
+        <p>
+            © 2026 BUSARO. All Rights Reserved.
+        </p>
+
+    </footer>
+
+</body>
+</html>
